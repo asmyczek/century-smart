@@ -26,7 +26,7 @@ class Client(object):
             client.set_callback(self.on_message)
             if not client.connect(clean_session=False):
                 print("MQTT new session being set up.")
-            client.subscribe('cmnd/gate/#', qos=1)
+            client.subscribe('cmnd/gate/#', qos=2)
             return client
         except Exception as e:
             print(e)
@@ -78,5 +78,6 @@ async def start_mqtt_client():
         CLIENT.check_msg()
         await uasyncio.sleep(1)
 
+    # TODO: add last will
     CLIENT.disconnect()
 
