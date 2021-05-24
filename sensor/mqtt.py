@@ -18,7 +18,7 @@ class Client(object):
 
     def _create_client(self):
         try:
-            client = MQTTClient('terrarium',
+            client = MQTTClient('gate',
                                 config.MQTT_HOST,
                                 user=config.MQTT_USER,
                                 password=config.MQTT_PASSWORD,

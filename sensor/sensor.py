@@ -1,9 +1,11 @@
 from sensor.mqtt import CLIENT as mqtt
-from machine import ADC, Pin, Timer, WDT
+from machine import ADC, Pin, Timer
 from micropython import schedule, alloc_emergency_exception_buf
 from time import ticks_ms, ticks_diff
 from uasyncio import sleep
 from config import PIN_SENSOR, ALERT_INERTVAL_TIME
+from wdt import WDT
+
 
 # Uncomment for debugging
 # alloc_emergency_exception_buf(100)
@@ -116,9 +118,8 @@ async def gate_controller():
     alert = sp.gate_alert
     mqtt.publish_gate_status(status)
     mqtt.publish_alert_status(alert)
-#    wdt = WDT()
     while True:
-#        wdt.feed()
+        WDT.feed()
         if status != sp.gate_status:
             status = sp.gate_status
             mqtt.publish_gate_status(status)
