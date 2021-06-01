@@ -4,7 +4,7 @@ from micropython import schedule, alloc_emergency_exception_buf
 from time import ticks_ms, ticks_diff
 from uasyncio import sleep
 from config import PIN_SENSOR, ALERT_INERTVAL_TIME
-from wdt import WDT
+from besp import WDT
 
 
 # Uncomment for debugging
@@ -29,8 +29,6 @@ LED_CLICK_STATUS = {
     3: GATE_ALERT_BATTERY_LOW,
     4: GATE_ALERT_COLLISION
 }
-
-IDLE_INERTVAL_TIME = ALERT_INERTVAL_TIME + 500
 
 class SignalParser(object):
     def __init__(self):
@@ -74,7 +72,7 @@ class SignalParser(object):
                 self.gate_status = GATE_STATUS_CLOSING
 
         self.validation_timer.init(period=ALERT_INERTVAL_TIME, callback=self.validate_state, mode=Timer.ONE_SHOT)
-        self.idle_timer.init(period=IDLE_INERTVAL_TIME, callback=self.validate_idle_state, mode=Timer.ONE_SHOT)
+        self.idle_timer.init(period=ALERT_INERTVAL_TIME + 500, callback=self.validate_idle_state, mode=Timer.ONE_SHOT)
 
     def validate_state(self, t):
         self.gate_alert = LED_CLICK_STATUS.get(self.blink_counter, GATE_ALERT_OK)

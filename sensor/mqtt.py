@@ -36,7 +36,8 @@ class Client(object):
         self.sensor_status_callback = callback
 
     def check_msg(self):
-        self._client.check_msg()
+        if self._client:
+            self._client.check_msg()
 
     def on_message(self, topic, message):
         print('{} - {}'.format(topic, message))

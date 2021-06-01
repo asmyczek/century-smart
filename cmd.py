@@ -1,7 +1,7 @@
 # Basic commands for webrepl
 from sensor.sensor import PIN_LIGHT
 from sensor.main import LOOP
-from wdt import WDT
+from besp import WDT
 import machine
 import os
 
