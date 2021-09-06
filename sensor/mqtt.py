@@ -17,20 +17,16 @@ class Client(object):
         self.sensor_status_callback = None
 
     def _create_client(self):
-        try:
-            client = MQTTClient('gate',
-                                config.MQTT_HOST,
-                                user=config.MQTT_USER,
-                                password=config.MQTT_PASSWORD,
-                                port=config.MQTT_PORT)
-            client.set_callback(self.on_message)
-            if not client.connect(clean_session=False):
-                print("MQTT new session being set up.")
-            client.subscribe('cmnd/gate/#', qos=2)
-            return client
-        except Exception as e:
-            print(e)
-            return None
+        client = MQTTClient('gate',
+                            config.MQTT_HOST,
+                            user=config.MQTT_USER,
+                            password=config.MQTT_PASSWORD,
+                            port=config.MQTT_PORT)
+        client.set_callback(self.on_message)
+        if not client.connect(clean_session=False):
+            print("MQTT new session being set up.")
+        client.subscribe('cmnd/gate/#', qos=2)
+        return client
 
     def set_sensor_status_callback(self, callback):
         self.sensor_status_callback = callback

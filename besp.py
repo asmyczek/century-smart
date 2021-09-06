@@ -18,13 +18,16 @@ def _connect_to_ap():
     WIFI_IF.connect(config.WIFI_SSID, config.WIFI_PASSWORD)
     RETRY = 0
     while (not WIFI_IF.isconnected()) and RETRY < 10:
-        time.sleep_ms(200)
+        time.sleep_ms(100)
         RETRY += 1
         if RETRY > 10:
             print('Unable to connect to WIFI for 2 seconds, will retry in 1 minute.')
     if WIFI_IF.isconnected():
-        ntptime.settime()
-        print('Network configuration:', WIFI_IF.ifconfig())
+        try:
+            ntptime.settime()
+        except OSError as e:
+            print(e)
+        print('Network configuration: {}'.format(WIFI_IF.ifconfig()))
 
 # Setup network on boot
 def setup_network():
@@ -57,7 +60,7 @@ class WatchDog:
     def count(self, t):
         self.counter += 1
         if self.counter >= self.timeout:
-            print('Rebooting...')
+            print('WDT - rebooting...')
             reset()
 
     def feed(self):

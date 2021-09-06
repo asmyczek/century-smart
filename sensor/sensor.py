@@ -94,10 +94,7 @@ class SignalParser(object):
 
 async def sunlight_controller():
     while True:
-        try:
-            mqtt.publish_sunlight_status(PIN_LIGHT.read())
-        except Exception as e:
-            print(e)
+        mqtt.publish_sunlight_status(PIN_LIGHT.read())
         await sleep(1800)
 
 
